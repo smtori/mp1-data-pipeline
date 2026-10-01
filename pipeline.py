@@ -11,6 +11,7 @@ Usage:
 import argparse
 import logging
 import sys
+from data_loaders import load_data
 from pathlib import Path
 
 
@@ -79,6 +80,14 @@ def main():
 
     if not validate_input(args.input):
         sys.exit(1)
+    
+    datafile = Path(args.input)
+    try: 
+        data = load_data(datafile)
+    except ValueError:
+        sys.exit(1)
+    
+    return data
 
 
 if __name__ == "__main__":
