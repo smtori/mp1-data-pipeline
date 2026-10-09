@@ -80,13 +80,13 @@ def main():
 
     if not validate_input(args.input):
         sys.exit(1)
-    
+          
     datafile = Path(args.input)
     try: 
         data = load_data(datafile)
     except ValueError:
         sys.exit(1)
-    
+  
     return data
 
 
