@@ -17,7 +17,8 @@ def load_csv(filepath):
 
     return df
 
-def load_json(filepath)
+
+def load_json(filepath):
     """Load a JSON file into a Python object (dict or list)
     filepath is a Path object
     """
@@ -29,6 +30,7 @@ def load_json(filepath)
 
     return data
 
+
 def load_yaml(filepath):
     """Load a YAML file into a Python object.
     filepath is a Path objcet.
@@ -37,10 +39,11 @@ def load_yaml(filepath):
 
     with open(path, "r") as f:
         data = yaml.safe_load(f)
-    
-    logger.info(f"Loaded YAML file: {path} ({len(df)} rows)")
-   
+
+    logger.info(f"Loaded YAML file: {path}")
+
     return data
+
 
 def load_data(filepath):
     """Load a file based on its extension.
