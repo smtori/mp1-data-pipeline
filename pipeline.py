@@ -13,7 +13,7 @@ import logging
 import sys
 from data_loaders import load_data
 from pathlib import Path
-
+from data_processor import process_data, create_cleaning_report
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +23,7 @@ def setup_logging(verbose=False):
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(
         level=level,
-        format="%(asctime)s %(levelname)-8s %(message)s",
+        format="%(asctime)s %(levelname)-8s %(name)s — %(message)s",
         datefmt="%H:%M:%S"
     )
 
@@ -40,15 +40,14 @@ def parse_arguments():
         help="Path to the input file"
     )
     parser.add_argument(
+        "--config", "-c",
+        required=True,
+        help="Path to a YAML configuration file" 
+    )
+    parser.add_argument(
         "--output", "-o",
         required=True,
         help="Path to the output file"
-    )
-    parser.add_argument(
-        "--format",
-        choices=["csv", "json"],
-        default="csv",
-        help="Output format: csv or json; default is csv",
     )
     parser.add_argument(
         "--verbose", "-v",
@@ -76,19 +75,36 @@ def main():
     setup_logging(verbose=args.verbose)
 
     logger = logging.getLogger(__name__)
-    logger.debug(f"Arguments parsed: input={args.input}, output={args.output}")
+    logger.debug(f"Arguments parsed: input={args.input}, config={args.config}, output={args.output}")
 
     if not validate_input(args.input):
         sys.exit(1)
-          
-    datafile = Path(args.input)
-    try: 
-        data = load_data(datafile)
+    if not validate_input(args.config):
+        sys.exit(1)
+
+    # Load data
+    try:
+        data = load_data(Path(args.input))
+        config = load_data(Path(args.config))
     except ValueError:
         sys.exit(1)
-  
-    return data
 
+    # Save copy of original data
+    df_original = data.copy()
+
+    # Process the Data
+    try:
+        data = process_data(data, config)
+    except ValueError:
+        sys.exit(1)
+
+    # Create cleaning report output
+    cleaning_report = create_cleaning_report(df_original, data)
+    print(cleaning_report)
+
+    # Save cleaned dataframe as CSV
+    data.to_csv(args.output, index=False)
+    logger.info(f"Saved cleaned data to {args.output}.")
 
 if __name__ == "__main__":
     main()

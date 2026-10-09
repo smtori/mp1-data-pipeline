@@ -17,7 +17,8 @@ def load_csv(filepath):
 
     return df
 
-def load_json(filepath)
+
+def load_json(filepath):
     """Load a JSON file into a Python object (dict or list)
     filepath is a Path object
     """
