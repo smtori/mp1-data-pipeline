@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 def remove_duplicates(df):
     """Remove duplicate rows."""
     df_orig_len = len(df)
-    df = df.remove_duplicates()
+    df = df.drop_duplicates()
 
     logger.debug(f"{df_orig_len - len(df)} duplicate row(s) removed.")
     return df
