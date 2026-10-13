@@ -1,6 +1,20 @@
-Student_Id, Score
-1,10
-2,15
-3,10
-4,10
-5,14
+validation:
+  required_columns:
+    - Student_Id
+    - Score
+  numeric_columns:
+    - Score
+
+processing:
+  remove_duplicates: true
+
+  missing:
+    enabled: true
+    axis: "rows"
+
+  outliers:
+    enabled: true
+    columns:
+      - Score
+    method: "iqr"
+    threshold: 1.5
