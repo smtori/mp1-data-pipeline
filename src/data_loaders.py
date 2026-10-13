@@ -1,11 +1,12 @@
 # data_loaders.py
 from pathlib import Path
 import logging
-import pandas as pd 
+import pandas as pd
 import json
 import yaml
 
 logger = logging.getLogger(__name__)
+
 
 def load_csv(filepath):
     """Load a CSV file into a Dataframe.
