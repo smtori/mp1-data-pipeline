@@ -28,6 +28,7 @@ def validate_dataframe(df, required_columns, numeric_columns):
                     float(value)
                 except ValueError:
                     logger.warning(f"{col} contains invalid values at row {i}")
+                    invalid_rows.append(i)
         if invalid_rows:
             df = df.drop(index=invalid_rows)
 
